@@ -1,14 +1,14 @@
 {
-  "name": "react_redux_template",
+  "name": "speech-to-text",
   "version": "1.0.0",
-  "description": "basic template with react, redux, and react-router",
+  "description": "basic speech-to-text app with speech synthesis",
   "main": "webpack.config.js",
   "scripts": {
     "test": "mocha ./tests/**/*.js --compilers js:babel-register",
     "start": "webpack -w --progress & nodemon server.js",
     "build-css": "node-sass -w public/sass/layout.scss -o public/style"
   },
-  "author": "Mithun",
+  "author": "Alejandro",
   "license": "ISC",
   "dependencies": {
     "annyang": "^2.6.0",
@@ -32,8 +32,7 @@
     "redux-logger": "^2.7.0",
     "redux-thunk": "^2.1.0",
     "speechkitt": "^0.3.0",
-    "velocity-animate": "^1.4.3",
-    "velocity.js": "^0.3.4",
+    "text-to-speech-js": "^1.1.4",
     "webpack": "^1.13.2"
   },
   "devDependencies": {
