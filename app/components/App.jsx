@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
-
-/* The 'App' component is the parent of all other components in React-Router. */
+import React from 'react';
+import Home from './Home';
 
 const App = props => {
-  const { children } = props;
 
   return (
     <div>
-      { children }
+      <Home />
     </div>
   )
 }
