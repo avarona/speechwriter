@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import annyang from 'annyang';
 import Artyom from 'artyom.js';
 
@@ -11,18 +12,17 @@ class Home extends Component {
     this.voiceRecord = this.voiceRecord.bind(this)
     this.keyboardType = this.keyboardType.bind(this)
     this.speechSynthesis = this.speechSynthesis.bind(this)
-  }
-
-  componentDidMount() {
-    return this.voiceRecord()
+    this.saveDoc = this.saveDoc.bind(this)
   }
 
   render() {
     return (
-      <div>
+      <div className="container">
         <h2>Speech to Text</h2>
-        <div
-          id="cube">
+        <div id="cube">
+
+          {/* TextArea & SaveDoc */}
+          <form onSubmit={this.saveDoc}>
             <div>
               <textarea
                 className="main-doc"
@@ -35,16 +35,24 @@ class Home extends Component {
             </div>
             <div>
               <button
-                className="btn btn-primary"
-                onClick={this.voiceRecord}>
-                  <i className="fa fa-microphone fa-2x" />
-              </button>
-              <button
-                className="btn btn-info"
-                onClick={this.speechSynthesis}>
-                  <i className="fa fa-volume-up fa-2x" />
+                className="btn btn-success">
+                  <i className="fa fa-save fa-2x" />
               </button>
             </div>
+          </form>
+
+          {/* Speech Buttons */}
+          <button
+            className="btn btn-primary"
+            onClick={this.voiceRecord}>
+            <i className="fa fa-microphone fa-2x" />
+          </button>
+          <button
+            className="btn btn-info"
+            onClick={this.speechSynthesis}>
+            <i className="fa fa-volume-up fa-2x" />
+          </button>
+
         </div>
       </div>
     )
@@ -54,8 +62,10 @@ class Home extends Component {
     this.setState({text: evt.target.value})
   }
 
-  voiceRecord() {
+  voiceRecord(event) {
+    event.preventDefault()
     if (annyang) {
+      annyang.start()
       console.log('annyang is enabled')
       let words = this.state.text
 
@@ -109,6 +119,20 @@ class Home extends Component {
         });
       }
     }
+  }
+
+  saveDoc(event) {
+    event.preventDefault()
+    console.log('1. button hit')
+    console.log(this, 'this')
+
+    axios.post('/api/save', this.state)
+    .then((res) => {
+      console.log('5. response', res)
+      this.setState({text: ''}) // remove text after save?
+      console.log('6. state after route: ', this.state.text)
+    })
+    .catch(err => console.error('Did not save', err))
   }
 
 }
