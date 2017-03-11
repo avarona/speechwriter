@@ -4,101 +4,151 @@ import annyang from 'annyang';
 import Artyom from 'artyom.js';
 
 let artyom = Artyom.ArtyomBuilder.getInstance();
+// artyom.initialize({lang: 'en-US'})   // set speech synthesis language
 
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {text: ''}
+    this.state = {
+      title: '',
+      text: '',
+      voice: false
+    }
+    this.voiceStop = this.voiceStop.bind(this)
     this.voiceRecord = this.voiceRecord.bind(this)
-    this.keyboardType = this.keyboardType.bind(this)
     this.speechSynthesis = this.speechSynthesis.bind(this)
-    this.saveDoc = this.saveDoc.bind(this)
+    this.save = this.save.bind(this)
+    this.download = this.download.bind(this)
   }
 
   render() {
     return (
-      <div className="container">
-        <h2>Speech to Text</h2>
-        <div id="cube">
+      <div className="">
+        <div id="cube" className="">
 
-          {/* TextArea & SaveDoc */}
-          <form onSubmit={this.saveDoc}>
-            <div>
-              <textarea
-                className="main-doc"
-                type="text"
-                style={{width: '600px', height: '50vh'}}
-                placeholder="type or start talking..."
-                value={this.state.text}
-                onChange={this.keyboardType}
-              />
-            </div>
-            <div>
+          {/* Title & SaveDoc */}
+          <div className="row">
+            <input
+              className="title"
+              type="text"
+              placeholder="Untitled Document"
+              value={this.state.title}
+              onChange={evt => this.setState({title: evt.target.value})}
+            />
+            <div className="file-btns col-lg-2">
               <button
-                className="btn btn-success">
-                  <i className="fa fa-save fa-2x" />
+                className="btn btn-success"
+                onClick={this.save}>
+                  <i className="fa fa-save fa-1x" />
+              </button>
+              <button
+                className="btn btn-warning"
+                onClick={this.download}>
+                  <i className="fa fa-download fa-1x" />
               </button>
             </div>
-          </form>
+          </div>
+
+          {/* TextArea */}
+          <div className="row">
+              <textarea
+                className="main-doc col-lg-8"
+                type="text"
+                placeholder="Type or start talking..."
+                value={this.state.text}
+                onChange={evt => this.setState({text: evt.target.value})}
+              />
+              <div className="col-lg-4">
+                save panel
+              </div>
+          </div>
 
           {/* Speech Buttons */}
-          <button
-            className="btn btn-primary"
-            onClick={this.voiceRecord}>
-            <i className="fa fa-microphone fa-2x" />
-          </button>
-          <button
-            className="btn btn-info"
-            onClick={this.speechSynthesis}>
-            <i className="fa fa-volume-up fa-2x" />
-          </button>
+          <div className="speech-btns row">
+            { (!this.state.voice)
+              ? <button
+                  className="btn btn-primary"
+                  onClick={this.voiceRecord}>
+                    <i className="fa fa-microphone fa-2x" />
+                </button>
+              : <button
+                  className="btn btn-danger"
+                  onClick={this.voiceStop}>
+                    <i className="fa fa-microphone-slash fa-2x" />
+                </button>
+            }
+            <button
+              className="btn btn-info"
+              onClick={this.speechSynthesis}>
+                <i className="fa fa-volume-up fa-2x" />
+            </button>
+          </div>
 
         </div>
       </div>
     )
   }
 
-  keyboardType(evt) {
-    this.setState({text: evt.target.value})
+  voiceStop() {
+    annyang.abort()
+    this.setState({voice: false})
+    console.log('annyang is disabled')
   }
 
-  voiceRecord(event) {
-    event.preventDefault()
+  voiceRecord() {
     if (annyang) {
-      annyang.start()
-      console.log('annyang is enabled')
-      let words = this.state.text
-
-    // TODO: FIX voice recognition overwrites typed state
-
-    // TODO: CREATE erase all ; enter ; indent ; show me timer ; submit/save
-      const commands = {
-        'erase all': () => {
-          this.setState({text: ''})
-          console.log('erase all command hit', this.state)
-        },
-        'enter': () => {
-          words = words + '\n'
-          console.log('enter command hit', words)
-      },
-        'indent': () => {
-          words = '  ' + words
-          console.log('indent command hit', words)
-      },
-        'show me timer': () => {
-          console.log('show me timer command hit')
-      },
-        'save': () => {
-          console.log('save command hit', words)
-        }
-      }
-
-      annyang.addCallback('result', (phrases) => {
-        words += phrases[0]
-        console.log('I think the user said: ', phrases[0]);
-        console.log('But then again, it could be any of the following: ', phrases);
-        this.setState({text: words})
+      annyang.start({
+        autoRestart: true,
+        continuous: false
       })
+      // annyang.setLanguage('es-ES')  // set language feature
+
+      this.setState({voice: true})
+      console.log('annyang is enabled')
+
+      const commands = {
+        'title *subject': (subject) => {
+          this.setState({title: subject})
+          console.log('title command has been hit')
+        },
+        'edit document': () => {
+          console.log('edit document has been hit')
+          annyang.addCallback('result', (phrases) => {
+            if (phrases[0] === 'exit document') {
+              console.log('Exitted document edit')
+              annyang.removeCallback('result')
+            } else {
+              let words = this.state.text
+              words += phrases[0]
+              console.log('Phrase captured: ', phrases[0]);
+              console.log('Possible options: ', phrases);
+              this.setState({text: words})
+            }
+          })
+        },
+        'edit document with *text': (text) => {
+          let words = this.state.text
+          this.setState({text: words + text})
+          console.log('edit document with command hit')
+        },
+        'stop recording': () => {
+          console.log('stop recording command hit')
+          return this.voiceStop()
+        },
+        'erase all': () => {
+          this.setState({text: '', title: ''})
+          console.log('erase all command hit. State: ', this.state)
+        },
+        'read document': () => {
+          console.log('read document command hit')
+          return this.speechSynthesis()
+        },
+        'save document': () => {
+          console.log('save document command hit')
+          return this.save()
+        },
+      }
+      annyang.addCommands(commands)
     }
   }
 
@@ -106,31 +156,40 @@ class Home extends Component {
     if (artyom) {
       console.log('artyom is enabled')
       if (!this.state.text) {
-        artyom.say('There is nothing in your document')
+        artyom.say('There is nothing in your document. Please type something, or press the microphone button to start the speech to text')
       } else {
         artyom.say(this.state.text, {
           onStart: function(){
             console.log('Text is being read...')
           },
           onEnd: function(){
-            console.log('End of text')
+            console.log('End of reading')
           }
         });
       }
     }
   }
 
-  saveDoc(event) {
-    event.preventDefault()
-    console.log('1. button hit')
-    console.log(this, 'this')
-    axios.post('/api/save', this.state)
-    .then((res) => {
-      console.log('5. response', res)
-      this.setState({text: ''}) // remove text after save?
-      console.log('6. state after route: ', this.state.text)
+  save() {
+    axios.post('/api/docs', this.state)
+    .then(res => {
+      console.log('response', res)
+      this.setState({
+        title: '',
+        text: ''
+      })
+      alert('Document has been saved!')
     })
     .catch(err => console.error('Did not save', err))
+  }
+
+// TODO: CREATE pending download option
+  download(event) {
+    event.preventDefault()
+    axios.get('/api/docs')
+    .then(res => {
+      console.log('response', res.data.text, res.data.title)
+    })
   }
 
 }

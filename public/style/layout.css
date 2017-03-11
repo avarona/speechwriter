@@ -1,6 +1,25 @@
-button {
-  min-width: 100px; }
+.title {
+  border: none;
+  outline: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 26px; }
 
-h2 {
-  background-color: red;
-  color: blue; }
+.main-doc {
+  padding: 1%;
+  margin: 0px;
+  min-width: 100px;
+  height: 60vh;
+  outline: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px; }
+
+.file-btns button {
+  width: 40px;
+  padding: 5px;
+  margin: 2px; }
+
+.speech-btns {
+  margin: 0 auto; }
+  .speech-btns button {
+    width: 80px;
+    margin: 2px; }
