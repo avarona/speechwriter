@@ -64,6 +64,15 @@ class Home extends Component {
               <div className="col-lg-4">
                 <ul>
                   <SavePanel />
+                  <h3>Speech Commands</h3>
+                  <li>'title' *title* - change title</li>
+                  <li>'edit document' - enter continuous edit mode</li>
+                  <li>'exit document' - exit continuous mode</li>
+                  <li>'edit document with' *text* - edit document once with specified text</li>
+                  <li>'stop recording' - turn speech-to-text off</li>
+                  <li>'erase all' - erase title and document</li>
+                  <li>'read document' - enable text-to-speech</li>
+                  <li>'save document' - save to database</li>
                 </ul>
               </div>
           </div>
