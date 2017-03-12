@@ -1,3 +1,6 @@
+.page-title {
+  padding: 2% 0; }
+
 .title {
   border: none;
   outline: none;
@@ -8,7 +11,7 @@
   padding: 1%;
   margin: 0px;
   min-width: 100px;
-  height: 60vh;
+  height: 50vh;
   outline: none;
   font-family: 'Montserrat', sans-serif;
   font-size: 18px; }

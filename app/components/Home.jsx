@@ -3,6 +3,8 @@ import axios from 'axios';
 import annyang from 'annyang';
 import Artyom from 'artyom.js';
 
+import SavePanel from './SavePanel'
+
 let artyom = Artyom.ArtyomBuilder.getInstance();
 // artyom.initialize({lang: 'en-US'})   // set speech synthesis language
 
@@ -12,13 +14,14 @@ class Home extends Component {
     this.state = {
       title: '',
       text: '',
-      voice: false
+      voice: false,
+      speech: false
     }
     this.voiceStop = this.voiceStop.bind(this)
     this.voiceRecord = this.voiceRecord.bind(this)
     this.speechSynthesis = this.speechSynthesis.bind(this)
+    this.speechStop = this.speechStop.bind(this)
     this.save = this.save.bind(this)
-    this.download = this.download.bind(this)
   }
 
   render() {
@@ -59,29 +62,39 @@ class Home extends Component {
                 onChange={evt => this.setState({text: evt.target.value})}
               />
               <div className="col-lg-4">
-                save panel
+                <ul>
+                  <SavePanel />
+                </ul>
               </div>
           </div>
 
           {/* Speech Buttons */}
           <div className="speech-btns row">
+            { (!this.state.speech)
+              ? <button
+                className="btn btn-info"
+                onClick={this.speechSynthesis}>
+                  <i className="fa fa-volume-off fa-2x" />
+              </button>
+              : <button
+                className="btn btn-danger"
+                onClick={this.speechStop}>
+                  <i className="fa fa-volume-up fa-2x" />
+              </button>
+            }
+
             { (!this.state.voice)
               ? <button
-                  className="btn btn-primary"
-                  onClick={this.voiceRecord}>
-                    <i className="fa fa-microphone fa-2x" />
-                </button>
+                className="btn btn-primary"
+                onClick={this.voiceRecord}>
+                <i className="fa fa-microphone-slash fa-2x" />
+              </button>
               : <button
-                  className="btn btn-danger"
-                  onClick={this.voiceStop}>
-                    <i className="fa fa-microphone-slash fa-2x" />
-                </button>
+                className="btn btn-danger"
+                onClick={this.voiceStop}>
+                <i className="fa fa-microphone fa-2x" />
+              </button>
             }
-            <button
-              className="btn btn-info"
-              onClick={this.speechSynthesis}>
-                <i className="fa fa-volume-up fa-2x" />
-            </button>
           </div>
 
         </div>
@@ -154,43 +167,48 @@ class Home extends Component {
 
   speechSynthesis() {
     if (artyom) {
+      this.setState({speech: true})
       console.log('artyom is enabled')
       if (!this.state.text) {
-        artyom.say('There is nothing in your document. Please type something, or press the microphone button to start the speech to text')
+        artyom.say('Please type something, or press the microphone button to start the speech to text', {
+          onEnd: () => this.setState({speech: false})
+        })
       } else {
         artyom.say(this.state.text, {
-          onStart: function(){
+          onStart: () => {
             console.log('Text is being read...')
           },
-          onEnd: function(){
+          onEnd: () => {
+            this.setState({speech: false})
             console.log('End of reading')
           }
-        });
+        })
       }
     }
   }
 
+  speechStop() {
+    artyom.shutUp()
+    this.setState({speech: false})
+    console.log('artyom is disabled')
+  }
+
   save() {
-    axios.post('/api/docs', this.state)
+    axios.post('/api/docs', {
+      title: this.state.title,
+      text: this.state.text
+    })
     .then(res => {
-      console.log('response', res)
       this.setState({
         title: '',
         text: ''
       })
-      alert('Document has been saved!')
+      alert(`${res.data.title} has been saved!`)
     })
     .catch(err => console.error('Did not save', err))
   }
 
 // TODO: CREATE pending download option
-  download(event) {
-    event.preventDefault()
-    axios.get('/api/docs')
-    .then(res => {
-      console.log('response', res.data.text, res.data.title)
-    })
-  }
 
 }
 

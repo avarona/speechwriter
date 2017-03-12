@@ -9,7 +9,7 @@ const app = express();
 
 
 // Create Database
-const url = process.env.DATABASE_URL || 'postgres://localhost:5432/speech'
+const url = process.env.DATABASE_URL || 'postgres://localhost:5432/speech_writer'
 const db = new Sequelize(url, {
   logging: false
 });
@@ -35,8 +35,8 @@ app.use(bodyParser.json());
 app.use('/public', express.static('public'));
 
 // Express Routes
-app.get('/api/docs/:id', function(req, res, next) {
-  Document.findById(req.params.id)
+app.get('/api/docs', function(req, res, next) {
+  Document.findAll()
   .then(doc => res.send(doc))
   .catch(err => console.error(err))
 })

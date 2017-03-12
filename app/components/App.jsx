@@ -5,9 +5,14 @@ const App = props => {
 
   return (
     <div className="container">
-      <h1 className="text-center">
-        Speech to Text
+      <h1 className="page-title text-center">
+        <span
+          style={{fontFamily: 'Special Elite'}}>Speech
+        </span>
+        <span style={{fontFamily: 'Arizonia', fontWeight: 'bold', color: 'blue', fontSize: '1.25em'}}>Writer
+        </span>
       </h1>
+      <br />
       <Home />
     </div>
   )
