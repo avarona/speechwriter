@@ -3,8 +3,6 @@ import axios from 'axios';
 import annyang from 'annyang';
 import Artyom from 'artyom.js';
 
-import SavePanel from './SavePanel'
-
 let artyom = Artyom.ArtyomBuilder.getInstance();
 // artyom.initialize({lang: 'en-US'})   // set speech synthesis language
 
@@ -15,13 +13,20 @@ class Home extends Component {
       title: '',
       text: '',
       voice: false,
-      speech: false
+      speech: false,
+      saved: []
     }
     this.voiceStop = this.voiceStop.bind(this)
     this.voiceRecord = this.voiceRecord.bind(this)
     this.speechSynthesis = this.speechSynthesis.bind(this)
     this.speechStop = this.speechStop.bind(this)
     this.save = this.save.bind(this)
+    this.getSaves = this.getSaves.bind(this)
+    this.getSaveById = this.getSaveById.bind(this)
+  }
+
+  componentDidMount() {
+    this.getSaves()
   }
 
   render() {
@@ -44,11 +49,6 @@ class Home extends Component {
                 onClick={this.save}>
                   <i className="fa fa-save fa-1x" />
               </button>
-              <button
-                className="btn btn-warning"
-                onClick={this.download}>
-                  <i className="fa fa-download fa-1x" />
-              </button>
             </div>
           </div>
 
@@ -63,8 +63,29 @@ class Home extends Component {
               />
               <div className="col-lg-4">
                 <ul>
-                  <SavePanel />
-                  <h3>Speech Commands</h3>
+
+                    SavePanel:
+                      {
+                        this.state.saved
+                        .map(doc => {
+                          return (
+                            <a
+                              key={doc.id}
+                              href="#"
+                              onClick={
+
+                                this.getSaveById(doc.id)
+                              }
+                            >
+                              <li>
+                                {doc.title}
+                              </li>
+                            </a>
+                          )
+                        })
+                      }
+
+                  {/* <h3>Speech Commands</h3>
                   <li>'title' *title* - change title</li>
                   <li>'edit document' - enter continuous edit mode</li>
                   <li>'exit document' - exit continuous mode</li>
@@ -72,7 +93,7 @@ class Home extends Component {
                   <li>'stop recording' - turn speech-to-text off</li>
                   <li>'erase all' - erase title and document</li>
                   <li>'read document' - enable text-to-speech</li>
-                  <li>'save document' - save to database</li>
+                  <li>'save document' - save to database</li> */}
                 </ul>
               </div>
           </div>
@@ -204,20 +225,37 @@ class Home extends Component {
 
   save() {
     axios.post('/api/docs', {
-      title: this.state.title,
+      title: (!this.state.title.length) ? 'Untitled Document' : this.state.title,
       text: this.state.text
     })
-    .then(res => {
+    .then(() => {
       this.setState({
         title: '',
         text: ''
       })
-      alert(`${res.data.title} has been saved!`)
+      this.getSaves()
     })
     .catch(err => console.error('Did not save', err))
   }
 
-// TODO: CREATE pending download option
+  getSaves() {
+    axios.get('/api/docs')
+    .then(res => {
+      this.setState({saved: res.data})
+    })
+  }
+
+  getSaveById(id) {
+    event.preventDefault()
+    axios.get(`/api/docs/${id}`)
+    .then(res => {
+      console.log(this)
+      // this.setState({title: res.data.title, text: res.data.text})
+      console.log('response', res.data)
+    })
+  }
+
+// TODO: CREATE download option
 
 }
 

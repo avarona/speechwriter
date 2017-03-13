@@ -41,6 +41,14 @@ app.get('/api/docs', function(req, res, next) {
   .catch(err => console.error(err))
 })
 
+app.get('/api/docs/:id', function(req, res, next) {
+  Document.findById(req.params.id)
+  .then(doc => {
+    console.log('reach the id section')
+    res.send(doc)})
+  .catch(err => console.error(err))
+})
+
 app.post('/api/docs', function(req, res, next) {
   Document.create(req.body)
   .then(savedDoc => res.send(savedDoc))
