@@ -2,6 +2,9 @@
   padding: 2% 0; }
 
 .title {
+  margin-left: 2%; }
+
+.title {
   border: none;
   outline: none;
   font-family: 'Montserrat', sans-serif;
@@ -11,18 +14,19 @@
   padding: 1%;
   margin: 0px;
   min-width: 100px;
-  height: 50vh;
+  height: 60vh;
   outline: none;
   font-family: 'Montserrat', sans-serif;
   font-size: 18px; }
 
-.file-btns button {
-  width: 40px;
-  padding: 5px;
-  margin: 2px; }
-
-.speech-btns {
+.btns {
   margin: 0 auto; }
-  .speech-btns button {
+  .btns button {
     width: 80px;
     margin: 2px; }
+
+.save-panel {
+  list-style-type: none; }
+
+.command-list {
+  list-style-type: none; }

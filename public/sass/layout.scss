@@ -3,6 +3,10 @@
 }
 
 .title {
+  margin-left: 2%;
+}
+
+.title {
   border: none;
   outline: none;
   font-family: 'Montserrat', sans-serif;
@@ -10,24 +14,16 @@
 }
 
 .main-doc {
-    padding: 1%;
-    margin: 0px;
-    min-width: 100px;
-    height: 50vh;
-    outline: none;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 18px;
+  padding: 1%;
+  margin: 0px;
+  min-width: 100px;
+  height: 60vh;
+  outline: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
 }
 
-.file-btns {
-  button {
-    width: 40px;
-    padding: 5px;
-    margin: 2px;
-  }
-}
-
-.speech-btns {
+.btns {
   margin: 0 auto;
   button {
     width: 80px;
@@ -37,4 +33,10 @@
 
 .save-panel {
 
+  list-style-type: none;
+}
+
+.command-list {
+  
+  list-style-type: none;
 }

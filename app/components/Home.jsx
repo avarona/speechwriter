@@ -43,90 +43,83 @@ class Home extends Component {
               value={this.state.title}
               onChange={evt => this.setState({title: evt.target.value})}
             />
-            <div className="file-btns col-lg-2">
-              <button
-                className="btn btn-success"
-                onClick={this.save}>
-                  <i className="fa fa-save fa-1x" />
-              </button>
-            </div>
           </div>
 
           {/* TextArea */}
           <div className="row">
+            <div className="textarea col-lg-8">
               <textarea
-                className="main-doc col-lg-8"
+                className="main-doc col-lg-12"
                 type="text"
                 placeholder="Type or start talking..."
                 value={this.state.text}
                 onChange={evt => this.setState({text: evt.target.value})}
               />
-              <div className="col-lg-4">
-                <ul>
-
-                    SavePanel:
-                      {
-                        this.state.saved
-                        .map(doc => {
-                          return (
-                            <a
-                              key={doc.id}
-                              href="#"
-                              onClick={
-
-                                this.getSaveById(doc.id)
-                              }
-                            >
-                              <li>
-                                {doc.title}
-                              </li>
-                            </a>
-                          )
-                        })
-                      }
-
-                  {/* <h3>Speech Commands</h3>
-                  <li>'title' *title* - change title</li>
-                  <li>'edit document' - enter continuous edit mode</li>
-                  <li>'exit document' - exit continuous mode</li>
-                  <li>'edit document with' *text* - edit document once with specified text</li>
-                  <li>'stop recording' - turn speech-to-text off</li>
-                  <li>'erase all' - erase title and document</li>
-                  <li>'read document' - enable text-to-speech</li>
-                  <li>'save document' - save to database</li> */}
-                </ul>
+              <div className="btns">
+                  <button
+                    className="btn btn-success"
+                    onClick={this.save}>
+                      <i className="fa fa-save fa-2x" />
+                  </button>
+                { (!this.state.speech)
+                  ? <button
+                    className="btn btn-info"
+                    onClick={this.speechSynthesis}>
+                      <i className="fa fa-volume-off fa-2x" />
+                  </button>
+                  : <button
+                    className="btn btn-danger"
+                    onClick={this.speechStop}>
+                      <i className="fa fa-volume-up fa-2x" />
+                  </button>
+                }
+                { (!this.state.voice)
+                  ? <button
+                    className="btn btn-primary"
+                    onClick={this.voiceRecord}>
+                    <i className="fa fa-microphone-slash fa-2x" />
+                  </button>
+                  : <button
+                    className="btn btn-danger"
+                    onClick={this.voiceStop}>
+                    <i className="fa fa-microphone fa-2x" />
+                  </button>
+                }
               </div>
+            </div>
+            <div className="col-lg-4">
+              <ol className="command-list">
+                <h5 className="text-center">Speech Commands</h5>
+                  <li><strong>'title'</strong> *title*</li>
+                  <li><strong>'edit document'</strong> - enter edit mode</li>
+                  <li><strong>'exit document'</strong> - exit edit mode</li>
+                  <li><strong>'edit document with'</strong> *text*</li>
+                  <li><strong>'erase all'</strong> - delete title and text</li>
+                  <li><strong>'read document'</strong></li>
+                  <li><strong>'save document'</strong></li>
+                  <li><strong>'stop recording'</strong></li>
+              </ol>
+              <br />
+              <ul className="save-panel">
+                <h5 className="text-center">Saved Documents</h5>
+                  {
+                    this.state.saved
+                    .map(doc => {
+                      return (
+                        <li
+                          key={doc.id}
+                          onClick={this.getSaveById}
+                        >
+                          <a href="#">
+                            {doc.title}
+                          </a>
+                        </li>
+                      )
+                    })
+                  }
+              </ul>
+            </div>
           </div>
-
-          {/* Speech Buttons */}
-          <div className="speech-btns row">
-            { (!this.state.speech)
-              ? <button
-                className="btn btn-info"
-                onClick={this.speechSynthesis}>
-                  <i className="fa fa-volume-off fa-2x" />
-              </button>
-              : <button
-                className="btn btn-danger"
-                onClick={this.speechStop}>
-                  <i className="fa fa-volume-up fa-2x" />
-              </button>
-            }
-
-            { (!this.state.voice)
-              ? <button
-                className="btn btn-primary"
-                onClick={this.voiceRecord}>
-                <i className="fa fa-microphone-slash fa-2x" />
-              </button>
-              : <button
-                className="btn btn-danger"
-                onClick={this.voiceStop}>
-                <i className="fa fa-microphone fa-2x" />
-              </button>
-            }
-          </div>
-
         </div>
       </div>
     )
@@ -245,12 +238,10 @@ class Home extends Component {
     })
   }
 
-  getSaveById(id) {
-    event.preventDefault()
-    axios.get(`/api/docs/${id}`)
+// TODO: FIX save panel links
+  getSaveById(evt) {
+    axios.get(`/api/docs`)
     .then(res => {
-      console.log(this)
-      // this.setState({title: res.data.title, text: res.data.text})
       console.log('response', res.data)
     })
   }
