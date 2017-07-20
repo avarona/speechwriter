@@ -8,6 +8,9 @@
     "start": "webpack -w --progress & nodemon server.js",
     "build-css": "node-sass -w public/sass/layout.scss -o public/style"
   },
+  "engines": {
+    "node": "6.11.1"
+  },
   "author": "Alejandro",
   "license": "ISC",
   "dependencies": {

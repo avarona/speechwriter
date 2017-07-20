@@ -3,7 +3,7 @@ import axios from 'axios';
 import annyang from 'annyang';
 import Artyom from 'artyom.js';
 
-let artyom = Artyom.ArtyomBuilder.getInstance();
+const artyom = new Artyom() //Artyom.ArtyomBuilder.getInstance();
 // artyom.initialize({lang: 'en-US'})   // set speech synthesis language
 
 class Home extends Component {
