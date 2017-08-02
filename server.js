@@ -56,14 +56,14 @@ app.post('/api/docs', function(req, res, next) {
 })
 
 // request any page and receive index.html
-app.get('/*', (req, res) => res.sendFile(resolve(__dirname, 'index.html')))
+app.get('/*', (req, res) => res.sendFile(resolve(__dirname, 'public/index.html')))
 
 // server listening!
 app.listen(process.env.PORT || 3000, () => {
-  console.log('Server is listening on port', 3000);
+  console.log('Server running on http://localhost:3000');
   db.sync()
   .then(function() {
-    console.log('Database is up and running')
+    console.log('Database synced')
   })
   .catch(err => console.error(err))
 })

@@ -1,7 +1,7 @@
 import React from 'react';
-import Home from './Home';
+import Home from './Home.jsx';
 
-const App = props => {
+const App = () => {
 
   return (
     <div className="container">
