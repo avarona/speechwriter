@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { FaMicrophoneSlash, FaMicrophone, FaVolumeUp, FaVolumeOff, FaFloppyO } from 'react-icons/lib/fa';
 import annyang from 'annyang';
 import Artyom from 'artyom.js';
 
@@ -59,30 +60,30 @@ class Home extends Component {
                   <button
                     className="btn btn-success"
                     onClick={this.save}>
-                      <i className="fa fa-save fa-2x" />
+                    <FaFloppyO size={30} />
                   </button>
                 { (!this.state.speech)
                   ? <button
                     className="btn btn-info"
                     onClick={this.speechSynthesis}>
-                      <i className="fa fa-volume-off fa-2x" />
+                    <FaVolumeOff size={30} />
                   </button>
                   : <button
                     className="btn btn-danger"
                     onClick={this.speechStop}>
-                      <i className="fa fa-volume-up fa-2x" />
+                      <FaVolumeUp size={30} />
                   </button>
                 }
                 { (!this.state.voice)
                   ? <button
                     className="btn btn-primary"
                     onClick={this.voiceRecord}>
-                    <i className="fa fa-microphone-slash fa-2x" />
+                    <FaMicrophoneSlash size={30} />
                   </button>
                   : <button
                     className="btn btn-danger"
                     onClick={this.voiceStop}>
-                    <i className="fa fa-microphone fa-2x" />
+                    <FaMicrophone size={30} />
                   </button>
                 }
               </div>
@@ -108,8 +109,7 @@ class Home extends Component {
                       return (
                         <li
                           key={doc.id}
-                          onClick={this.getSaveById}
-                        >
+                          onClick={this.getSaveById}>
                           <a href="#">
                             {doc.title}
                           </a>

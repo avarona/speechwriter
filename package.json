@@ -24,6 +24,7 @@
     "pg-hstore": "^2.3.2",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
+    "react-icons": "^2.2.5",
     "sequelize": "^4.4.2",
     "webpack": "^3.4.1"
   },
