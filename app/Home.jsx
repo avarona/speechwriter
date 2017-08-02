@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { FaMicrophoneSlash, FaMicrophone, FaVolumeUp, FaVolumeOff, FaFloppyO } from 'react-icons/lib/fa';
+import { FaMicrophoneSlash, FaMicrophone, FaVolumeUp, FaVolumeOff, FaFloppyO, FaTimesCircle } from 'react-icons/lib/fa';
 import annyang from 'annyang';
 import Artyom from 'artyom.js';
 
@@ -32,8 +32,8 @@ class Home extends Component {
 
   render() {
     return (
-      <div className="">
-        <div id="cube" className="">
+      <div>
+        <div id="cube">
 
           {/* Title & SaveDoc */}
           <div className="row">
@@ -109,7 +109,16 @@ class Home extends Component {
                       return (
                         <li
                           key={doc.id}
-                          onClick={this.getSaveById}>
+                          onClick={this.getSaveById.bind(this, doc.id)}>
+                          <a href="#">
+                            <FaTimesCircle
+                              style={{
+                                margin: '0 10px',
+                                color: 'red'
+                              }}
+                              size={20}
+                              onClick={this.delete.bind(this, doc.id)} />
+                          </a>
                           <a href="#">
                             {doc.title}
                           </a>
@@ -238,12 +247,27 @@ class Home extends Component {
     })
   }
 
-// TODO: FIX save panel links
-  getSaveById(evt) {
-    axios.get(`/api/docs`)
+  getSaveById(id) {
+    axios.get(`/api/docs/${id}`)
     .then(res => {
-      console.log('response', res.data)
+      this.setState({
+        title: res.data.title,
+        text: res.data.text
+      })
     })
+    .catch(err => console.error(err))
+  }
+
+  delete(id) {
+    axios.delete(`/api/docs/${id}`)
+    .then((res) => {
+      this.setState({
+        saved: res.data,
+        title: '',
+        text: ''
+      })
+    })
+    .catch(err => console.error(err))
   }
 
 // TODO: CREATE download option

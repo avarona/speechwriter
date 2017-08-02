@@ -38,15 +38,30 @@ app.use('/public', express.static('public'));
 app.get('/api/docs', function(req, res, next) {
   Document.findAll()
   .then(doc => res.send(doc))
-  .catch(err => console.error(err))
+  .catch(next)
 })
 
 app.get('/api/docs/:id', function(req, res, next) {
   Document.findById(req.params.id)
   .then(doc => {
-    console.log('reach the id section')
     res.send(doc)})
-  .catch(err => console.error(err))
+  .catch(next)
+})
+
+app.delete('/api/docs/:id', function(req, res, next) {
+  Document.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(() => {
+    console.log(`Id: ${req.params.id} destroyed`)
+    Document.findAll()
+    .then(docs => {
+      res.send(docs)
+    })
+  })
+  .catch(next)
 })
 
 app.post('/api/docs', function(req, res, next) {
