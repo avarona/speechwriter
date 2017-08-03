@@ -59,30 +59,30 @@ class Home extends Component {
               <div className="btns">
                   <button
                     className="btn btn-success"
-                    onClick={this.save}>
+                    onTouchTap={this.save}>
                     <FaFloppyO size={30} />
                   </button>
                 { (!this.state.speech)
                   ? <button
                     className="btn btn-info"
-                    onClick={this.speechSynthesis}>
+                    onTouchTap={this.speechSynthesis}>
                     <FaVolumeOff size={30} />
                   </button>
                   : <button
                     className="btn btn-danger"
-                    onClick={this.speechStop}>
+                    onTouchTap={this.speechStop}>
                       <FaVolumeUp size={30} />
                   </button>
                 }
                 { (!this.state.voice)
                   ? <button
                     className="btn btn-primary"
-                    onClick={this.voiceRecord}>
+                    onTouchTap={this.voiceRecord}>
                     <FaMicrophoneSlash size={30} />
                   </button>
                   : <button
                     className="btn btn-danger"
-                    onClick={this.voiceStop}>
+                    onTouchTap={this.voiceStop}>
                     <FaMicrophone size={30} />
                   </button>
                 }
@@ -109,7 +109,7 @@ class Home extends Component {
                       return (
                         <li
                           key={doc.id}
-                          onClick={this.getSaveById.bind(this, doc.id)}>
+                          onTouchTap={this.getSaveById.bind(this, doc.id)}>
                           <a href="#">
                             <FaTimesCircle
                               style={{
@@ -117,7 +117,7 @@ class Home extends Component {
                                 color: 'red'
                               }}
                               size={20}
-                              onClick={this.delete.bind(this, doc.id)} />
+                              onTouchTap={this.delete.bind(this, doc.id)} />
                           </a>
                           <a href="#">
                             {doc.title}

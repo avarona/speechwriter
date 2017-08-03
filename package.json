@@ -34,6 +34,7 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-icons": "^2.2.5",
+    "react-tap-event-plugin": "^2.0.1",
     "sass-loader": "^6.0.6",
     "sequelize": "^4.4.2",
     "style-loader": "^0.18.2",
