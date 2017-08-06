@@ -1,6 +1,16 @@
+.ds_store
+
+# Ignore all node_modules
 node_modules
-npm-debug.log
-.DS_Store
-public/dist
+
+# ...except the symlink to ourselves.
+!node_modules/APP
+
+# Yarn lockfile
 yarn.lock
-.babelrc
+
+# Compiled JS
+public/dist
+
+# NPM errors
+npm-debug.log

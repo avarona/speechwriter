@@ -59,30 +59,30 @@ class Home extends Component {
               <div className="btns">
                   <button
                     className="btn btn-success"
-                    onTouchTap={this.save}>
+                    onClick={this.save}>
                     <FaFloppyO size={30} />
                   </button>
                 { (!this.state.speech)
                   ? <button
                     className="btn btn-info"
-                    onTouchTap={this.speechSynthesis}>
+                    onClick={this.speechSynthesis}>
                     <FaVolumeOff size={30} />
                   </button>
                   : <button
                     className="btn btn-danger"
-                    onTouchTap={this.speechStop}>
+                    onClick={this.speechStop}>
                       <FaVolumeUp size={30} />
                   </button>
                 }
                 { (!this.state.voice)
                   ? <button
                     className="btn btn-primary"
-                    onTouchTap={this.voiceRecord}>
+                    onClick={this.voiceRecord}>
                     <FaMicrophoneSlash size={30} />
                   </button>
                   : <button
                     className="btn btn-danger"
-                    onTouchTap={this.voiceStop}>
+                    onClick={this.voiceStop}>
                     <FaMicrophone size={30} />
                   </button>
                 }
@@ -104,12 +104,11 @@ class Home extends Component {
               <ul className="save-panel">
                 <h5 className="text-center">Saved Documents</h5>
                   {
-                    this.state.saved
-                    .map(doc => {
+                    this.state.saved.map(doc => {
                       return (
                         <li
                           key={doc.id}
-                          onTouchTap={this.getSaveById.bind(this, doc.id)}>
+                          onClick={this.getSaveById.bind(this, doc.id)}>
                           <a href="#">
                             <FaTimesCircle
                               style={{
@@ -117,7 +116,7 @@ class Home extends Component {
                                 color: 'red'
                               }}
                               size={20}
-                              onTouchTap={this.delete.bind(this, doc.id)} />
+                              onClick={this.delete.bind(this, doc.id)} />
                           </a>
                           <a href="#">
                             {doc.title}
