@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   entry: './app/origin.jsx',
@@ -10,6 +11,12 @@ module.exports = {
   },
   context: __dirname,
   devtool: 'source-map',
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      include: /\.min\.js$/
+    }),
+    new webpack.optimize.AggressiveMergingPlugin()
+  ],
   module: {
     loaders: [
       {
