@@ -1,0 +1,7 @@
+[build]
+  functions = "functions"
+  command = "yarn build"
+  publish = "build"
+
+[dev]
+  command = "react-scripts start"
