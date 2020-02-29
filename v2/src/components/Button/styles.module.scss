@@ -11,9 +11,11 @@
 
 .primary {
     background: #258efe;
+
     
     &:hover {
-        background: darken(#258efe, 10%);
+        background: lighten(#258efe, 10%);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
 }
 
@@ -22,14 +24,16 @@
 
     &:hover {
         background: darken(#176e0f, 10%);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
 }
 
 .danger {
     background: #c21532;
-    
+
     &:hover {
         background: darken(#c21532, 10%);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
 }
 

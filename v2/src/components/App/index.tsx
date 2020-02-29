@@ -10,20 +10,34 @@ type State = {
     body?: string;
     title?: string;
   };
+  micOn: boolean;
+  speakerOn: boolean;
 }
 
 class App extends React.Component<{}, State> {
   state = {
     notification: undefined,
+    micOn: false,
+    speakerOn: false,
     page: {
       title: '',
       body: ''
-    }
+    },
   }
 
-  saveDocument = () => {
+  save = () => {
     const { page } = this.state;
     createDoc(page).then(res => this.setState({ notification: 'success' }));
+  }
+
+  toggleMic = () => {
+    const { micOn } = this.state;
+    this.setState({ micOn: !micOn });
+  }
+
+  toggleSpeaker = () => {
+    const { speakerOn } = this.state;
+    this.setState({ speakerOn: !speakerOn });
   }
 
   handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({ page: { title: e.currentTarget.value } });
@@ -31,7 +45,7 @@ class App extends React.Component<{}, State> {
   handlePageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => this.setState({ page: { body: e.currentTarget.value }});
 
   render() {
-    const { page: { body, title }} = this.state;
+    const { page: { body, title }, micOn, speakerOn } = this.state;
     return (
       <div className={styles.appContainer}>
         <Page 
@@ -41,7 +55,13 @@ class App extends React.Component<{}, State> {
           handleTitleChange={this.handleTitleChange}
           handlePageChange={this.handlePageChange}
         />
-        <Controls />
+        <Controls 
+          save={this.save}
+          toggleMic={this.toggleMic}
+          toggleSpeaker={this.toggleSpeaker}
+          micOn={micOn}
+          speakerOn={speakerOn}
+        />
       </div>
     )
   }
