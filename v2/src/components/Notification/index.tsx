@@ -1,11 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
 import getNotifMessage from '../../utils/getNotifMessage';
-import debounce from '../../utils/debounce';
 import styles from './styles.module.scss';
 
 type Props = {
-    message?: 'success' | 'error' | 'err-empty';
+    message?: 'success' | 'error' | 'err-empty' | 'err-nodocs';
 }
 
 const Notification = ({ message }: Props) => {

@@ -3,10 +3,10 @@ import Notification from '../Notification';
 import Page from '../Page';
 import Controls from '../Controls';
 import styles from './styles.module.scss';
-import { createDoc } from '../../api';
+import { fetchDoc, createDoc } from '../../api';
 
 type State = {
-  notification?: 'success' | 'error' | 'err-empty';
+  notification?: 'success' | 'error' | 'err-empty' | 'err-nodocs';
   page: {
     body?: string;
     title?: string;
@@ -24,6 +24,12 @@ class App extends React.Component<{}, State> {
       title: '',
       body: ''
     },
+  }
+
+  componentDidMount() {
+    fetchDoc().then(res => {
+
+    }).catch(err => this.setState({ notification: 'err-nodocs'}));
   }
 
   save = () => {
