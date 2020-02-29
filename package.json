@@ -1,51 +1,53 @@
 {
-  "name": "speech-to-text",
-  "version": "1.0.0",
-  "description": "basic speech-to-text app with speech synthesis",
-  "main": "app.js",
+  "name": "v2",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "heroku-prebuild": "export NPM_CONFIG_PRODUCTION=false; export NODE_ENV=; NPM_CONFIG_PRODUCTION=false NODE_ENV=development npm install --only=dev --dev",
-    "heroku-postbuild": "export NPM_CONFIG_PRODUCTION=true; export NODE_ENV=production;",
-    "start": "node app.js",
-    "build": "webpack -w --progress --color",
-    "dev-start": "nodemon app.js",
-    "build-css": "node-sass -w public/sass/layout.scss -o public/style",
-    "test": "mocha ./tests/**/*.js --compilers js:babel-register"
+    "start": "react-scripts start",
+    "start:dev": "netlify dev",
+    "build": "yarn scripts && yarn build:server && yarn build:client",
+    "build:client": "react-scripts build",
+    "build:server": "netlify-lambda build lambda",
+    "scripts": "netlify dev:exec node ./scripts/setup_db.ts",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "engines": {
-    "node": "7.10.1"
+  "eslintConfig": {
+    "extends": "react-app"
   },
-  "author": "Alejandro",
-  "license": "ISC",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "dependencies": {
-    "annyang": "^2.6.0",
-    "artyom.js": "^1.0.5",
-    "axios": "^0.15.3",
-    "body-parser": "^1.17.1",
-    "bootstrap": "4.0.0-alpha.6",
-    "express": "^4.14.0",
-    "pg": "^7.0.2",
-    "pg-hstore": "^2.3.2",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
-    "react-icons": "^2.2.5",
-    "react-tap-event-plugin": "^2.0.1",
-    "sequelize": "^4.4.2",
-    "webpack": "^3.5.2"
+    "@types/react": "^16.9.23",
+    "annyang": "^2.6.1",
+    "artyom.js": "^1.0.6",
+    "axios": "^0.19.2",
+    "faunadb": "^2.11.1",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-icons": "^3.9.0",
+    "react-scripts": "3.4.0",
+    "typescript": "~3.7.2"
   },
   "devDependencies": {
-    "babel-core": "^6.25.0",
-    "babel-loader": "^7.1.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "chai": "^3.5.0",
-    "css-loader": "^0.28.4",
-    "mocha": "^3.2.0",
-    "morgan": "^1.8.2",
-    "node-sass": "^4.5.3",
-    "nodemon": "^1.11.0",
-    "sass-loader": "^6.0.6",
-    "sinon": "^1.17.7",
-    "style-loader": "^0.18.2"
+    "@types/classnames": "^2.2.9",
+    "@types/jest": "^25.1.3",
+    "@types/react-dom": "^16.9.5",
+    "@types/react-icons": "^3.0.0",
+    "chalk": "^3.0.0",
+    "classnames": "^2.2.6",
+    "netlify-cli": "^2.36.0",
+    "netlify-lambda": "^1.6.3",
+    "node-sass": "^4.13.1"
   }
 }

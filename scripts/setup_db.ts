@@ -10,7 +10,7 @@ console.log(chalk.cyan('Creating your FaunaDB Database...\n'))
 if (!process.env.REACT_APP_FAUNADB_SECRET) {
   console.log(chalk.yellow('Required REACT_APP_FAUNADB_SECRET enviroment variable not found.'))
   console.log(`Make sure you have created your Fauna databse with "netlify addons:create fauna"`)
-  console.log(`Then run "npm run bootstrap" to setup your database schema`)
+  console.log(`Then run "yarn scripts" to setup your database schema`)
   if (insideNetlify) {
     process.exit(1)
   }
