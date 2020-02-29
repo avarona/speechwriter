@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start:dev": "netlify-lambda build lambda && netlify dev",
     "start:client": "react-scripts start",
     "start:server": "netlify-lambda serve lambda",
     "scripts": "netlify dev:exec node ./scripts/setup_db.ts",
