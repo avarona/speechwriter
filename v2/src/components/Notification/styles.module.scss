@@ -1,0 +1,25 @@
+.notifContainer {
+    position: fixed;
+    top: 5%;
+    right: 5%;
+    padding: 12px;
+    color: white;
+    border-radius: 8px;
+    user-select: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.success {
+    background: green;
+}
+
+.error {
+    background: red;
+}

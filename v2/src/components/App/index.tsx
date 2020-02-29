@@ -1,11 +1,12 @@
 import React from 'react';
+import Notification from '../Notification';
 import Page from '../Page';
 import Controls from '../Controls';
 import styles from './styles.module.scss';
 import { createDoc } from '../../api';
 
 type State = {
-  notification?: 'success' | 'error';
+  notification?: 'success' | 'error' | 'err-empty';
   page: {
     body?: string;
     title?: string;
@@ -26,8 +27,15 @@ class App extends React.Component<{}, State> {
   }
 
   save = () => {
-    const { page } = this.state;
-    createDoc(page).then(res => this.setState({ notification: 'success' }));
+    const { page, page: { title, body } } = this.state;
+    if(title || body) {
+      createDoc(page).then(res => {
+        this.setState({ notification: 'success' });
+      }).catch(err => this.setState({ notification: 'error' }));
+    } else {
+      console.log('asdf')
+      this.setState({ notification: 'err-empty' })
+    }
   }
 
   toggleMic = () => {
@@ -45,9 +53,10 @@ class App extends React.Component<{}, State> {
   handlePageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => this.setState({ page: { body: e.currentTarget.value }});
 
   render() {
-    const { page: { body, title }, micOn, speakerOn } = this.state;
+    const { page: { body, title }, micOn, speakerOn, notification } = this.state;
     return (
       <div className={styles.appContainer}>
+        <Notification message={notification} />
         <Page 
           placeholder="Type something..."
           title={title}
