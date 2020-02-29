@@ -20,7 +20,7 @@
   "dependencies": {
     "annyang": "^2.6.0",
     "artyom.js": "^1.0.5",
-    "axios": "^0.15.3",
+    "axios": "^0.19.2",
     "body-parser": "^1.17.1",
     "bootstrap": "4.0.0-alpha.6",
     "express": "^4.14.0",
