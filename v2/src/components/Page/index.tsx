@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '../Button';
 import PageTitle from '../PageTitle';
 import styles from './styles.module.scss';
 
