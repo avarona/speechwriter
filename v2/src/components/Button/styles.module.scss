@@ -6,7 +6,7 @@
     user-select: none;
     outline: none;
     transition: background 0.2s ease-in-out;
-    color: #fff;
+    color: white;
 }
 
 .primary {
@@ -31,4 +31,8 @@
     &:hover {
         background: darken(#c21532, 10%);
     }
+}
+
+.circle {
+    border-radius: 50%;
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import Page from '../Page';
+import Controls from '../Controls';
 import styles from './styles.module.scss';
 import { createDoc } from '../../api';
 
@@ -33,7 +34,6 @@ class App extends React.Component<{}, State> {
     const { page: { body, title }} = this.state;
     return (
       <div className={styles.appContainer}>
-        <h1>SpeechWriter</h1>
         <Page 
           placeholder="Type something..."
           title={title}
@@ -41,7 +41,7 @@ class App extends React.Component<{}, State> {
           handleTitleChange={this.handleTitleChange}
           handlePageChange={this.handlePageChange}
         />
-        {/* <Button onClick={this.saveDocument} intent="primary">SAVE</Button> */}
+        <Controls />
       </div>
     )
   }
