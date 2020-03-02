@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "start:dev": "netlify dev",
-    "build": "yarn scripts && yarn build:server && yarn build:client",
+    "start:dev": "NODE_ENV=development && netlify dev",
+    "build": "NODE_EVN=production && yarn scripts && yarn build:server && yarn build:client",
     "build:client": "react-scripts build",
     "build:server": "netlify-lambda build lambda",
     "scripts": "netlify dev:exec node ./scripts/setup_db.ts",
@@ -28,7 +28,6 @@
     ]
   },
   "dependencies": {
-    "@types/react": "^16.9.23",
     "annyang": "^2.6.1",
     "artyom.js": "^1.0.6",
     "axios": "^0.19.2",
@@ -42,6 +41,7 @@
   "devDependencies": {
     "@types/classnames": "^2.2.9",
     "@types/jest": "^25.1.3",
+    "@types/react": "^16.9.23",
     "@types/react-dom": "^16.9.5",
     "@types/react-icons": "^3.0.0",
     "chalk": "^3.0.0",
