@@ -3,21 +3,22 @@ import Notification from '../Notification';
 import Page from '../Page';
 import Controls from '../Controls';
 import styles from './styles.module.scss';
-import { fetchDoc, createDoc } from '../../api';
+import { fetchDocs, createDoc } from '../../api';
+
+type Props = {}
 
 type State = {
-  notification?: 'success' | 'error' | 'err-empty' | 'err-nodocs';
-  page: {
-    body?: string;
-    title?: string;
-  };
+  notification?: NotifMessage;
+  pages: Array<Page>;
+  page: Page;
   micOn: boolean;
   speakerOn: boolean;
 }
 
-class App extends React.Component<{}, State> {
+class App extends React.Component<Props, State> {
   state = {
     notification: undefined,
+    pages: [],
     micOn: false,
     speakerOn: false,
     page: {
@@ -27,14 +28,21 @@ class App extends React.Component<{}, State> {
   }
 
   componentDidMount() {
-    fetchDoc().then(res => {
-
+    fetchDocs().then(res => {
+      console.log('response', res)
     }).catch(err => this.setState({ notification: 'err-nodocs'}));
   }
 
+  componentDidUpdate(props: Props, state: State) {
+    console.log('asdf', props, state)
+    if(state.notification) {
+      setTimeout(() => this.setState({ notification: undefined }), 2000)
+    }
+  }
+
   save = () => {
-    const { page, page: { title, body } } = this.state;
-    if(title || body) {
+    const { page } = this.state;
+    if(page.title || page.body) {
       createDoc(page).then(res => {
         this.setState({ notification: 'success' });
       }).catch(err => this.setState({ notification: 'error' }));
@@ -54,9 +62,25 @@ class App extends React.Component<{}, State> {
     this.setState({ speakerOn: !speakerOn });
   }
 
-  handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({ page: { title: e.currentTarget.value } });
+  handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { page } = this.state;
+    this.setState({
+      page: {
+        ...page,
+        title: e.currentTarget.value
+      }
+    });
+  };
 
-  handlePageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => this.setState({ page: { body: e.currentTarget.value }});
+  handlePageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { page } = this.state;
+    this.setState({ 
+      page: {
+        ...page,
+        body: e.currentTarget.value
+      }
+    });
+  };
 
   render() {
     const { page: { body, title }, micOn, speakerOn, notification } = this.state;

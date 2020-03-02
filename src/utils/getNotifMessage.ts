@@ -1,6 +1,6 @@
 import { NOTIFS } from '../constants';
 
-const getNotifMessage = (msg: 'success' | 'error' | 'err-empty' | 'err-nodocs') => {
+const getNotifMessage = (msg: NotifMessage) => {
     switch(msg) {
         case 'success':
             return NOTIFS.SUCCESS;

@@ -1,0 +1,1 @@
+type NotifMessage = undefined | 'success' | 'error' | 'err-empty' | 'err-nodocs';

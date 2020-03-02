@@ -4,11 +4,12 @@ import getNotifMessage from '../../utils/getNotifMessage';
 import styles from './styles.module.scss';
 
 type Props = {
-    message?: 'success' | 'error' | 'err-empty' | 'err-nodocs';
+    message?: NotifMessage;
 }
 
 const Notification = ({ message }: Props) => {
     const isSuccess = message === 'success';
+    console.log('message', message)
     return (
         <div className={classnames(styles.notifContainer, {
             [styles.visible]: message,
