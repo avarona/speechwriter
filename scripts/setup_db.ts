@@ -1,10 +1,10 @@
 /* bootstrap database in your FaunaDB account */
-const faunadb = require('faunadb')
-const chalk = require('chalk')
-const insideNetlify = insideNetlifyBuildContext()
-const q = faunadb.query
+const faunadb = require('faunadb');
+const chalk = require('chalk');
+const insideNetlify = insideNetlifyBuildContext();
+const q = faunadb.query;
 
-console.log(chalk.cyan('Creating your FaunaDB Database...\n'))
+console.log(chalk.cyan('Creating your FaunaDB Database...\n'));
 
 // 1. Check for required enviroment variables
 if (!process.env.REACT_APP_FAUNADB_SECRET) {
@@ -26,27 +26,45 @@ if (process.env.REACT_APP_FAUNADB_SECRET) {
 
 /* idempotent operation */
 function createFaunaDB(key) {
-  console.log('Create the fauna database schema!')
+  console.log('Create the fauna database schema!');
   const client = new faunadb.Client({
     secret: key
-  })
+  });
 
   /* Based on your requirements, change the schema here */
   return client.query(q.Create(q.Ref('classes'), { name: 'pages' }))
+    .then(() => {
+      return client.query(q.Create(q.Ref('classes'), { name: 'users' }))
+    })
     .then(() => {
       return client.query(
         q.Create(q.Ref('indexes'), {
           name: 'all_pages',
           source: q.Ref('classes/pages')
         }))
-    }).catch((e) => {
+    })
+    .then(() => {
+      return client.query(
+        q.Create(q.Ref('indexes'), {
+          name: 'all_users',
+          source: q.Ref('classes/users')
+        }))
+    })
+    .then(() => {
+      return client.query(
+        q.Create(q.Ref('indexes'), {
+          name: 'pages_by_user_id',
+          source: q.Ref('classes/pages')
+        }))
+    })
+    .catch((e) => {
       // Database already exists
       if (e.requestResult.statusCode === 400 && e.message === 'instance not unique') {
         console.log('Fauna already setup! Good to go')
         console.log('Claim your fauna database with "netlify addons:auth fauna"')
         throw e
       }
-    })
+    });
 }
 
 /* util methods */

@@ -9,6 +9,7 @@ type Props = {}
 
 type State = {
   notification?: NotifMessage;
+  user: User;
   pages: Array<Page>;
   page: Page;
   micOn: boolean;
@@ -21,6 +22,7 @@ class App extends React.Component<Props, State> {
     pages: [],
     micOn: false,
     speakerOn: false,
+    user: { id: '1' },
     page: {
       title: '',
       body: ''
@@ -28,8 +30,11 @@ class App extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    fetchDocs().then(res => {
-      console.log('response', res)
+    const { user } = this.state;
+    fetchDocs(user.id).then(({ data }) => {
+      const { title, body } = data[data.length - 1].data;
+      const page = { title, body };
+      this.setState({ pages: data, page });
     }).catch(err => this.setState({ notification: 'err-nodocs'}));
   }
 
